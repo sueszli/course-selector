@@ -781,13 +781,13 @@
                         const courseDiv = document.createElement("div");
                         courseDiv.className = "course-item";
                         courseDiv.innerHTML = `
-                        <input type="checkbox" id="${course.name}" 
-                               ${course.completed} ? 'checked' : ''}>
-                        <label for="${course.name}">
-                            ${course.name} 
-                            <span class="ects">(${course.ects} ECTS)</span>
-                        </label>
-                    `;
+	                    <input type="checkbox" id="${course.name}" 
+	                        ${course.completed} ? 'checked' : ''}>
+	                    <label for="${course.name}">
+	                        ${course.name} 
+			        <span class="ects">(${course.ects} ECTS)</span>
+	                    </label>
+                    	`;
 
                         const checkbox = courseDiv.querySelector("input");
                         checkbox.addEventListener("change", () => {
