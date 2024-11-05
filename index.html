@@ -110,6 +110,16 @@
         <div class="course-list">
             <h2>Available Courses</h2>
             <div id="courseList"></div>
+			<div class="recognised-courses">
+				<h2>Recognised Courses</h2>
+				<input type="text" id="newCourseName" placeholder="Course Name">
+				<input type="number" id="newCourseEcts" placeholder="ECTS" min="0" step="0.5">
+				<select id="moduleSelect">
+					<!-- Populate with JavaScript dynamically -->
+				</select>
+				<button onclick="addRecognisedCourse()">Add Course</button>
+				<div id="recognisedCoursesList"></div>
+			</div>
         </div>
         <div class="progress-tracker">
             <h2>Progress Tracker</h2>
@@ -743,6 +753,7 @@
                 "completed": false
             }
         ]
+		const recognisedCourses = [];
 
         const MAX_ECTS_PER_EXT = 18 // maximum ECTS that can be counted per extension
         const N_CORES_REQUIRED = 2 // requirement for number of cores completed
@@ -864,6 +875,19 @@
                     extraCores -= 1
                 }
             })
+			
+			// Include recognised courses in the calculation
+			recognisedCourses.forEach(course => {
+				if (course.completed) {
+					if (course.submodule) {
+						// Add ECTS to the specific submodule
+						modules[course.supermodule].submodules[course.submodule].current += course.ects;
+					} else if (modules[course.supermodule]) {
+						// Add ECTS to the main module if no submodule is specified
+						modules[course.supermodule].current += course.ects;
+					}
+				}
+			});
 
             // add extra extension credits to free electives (this technically does not need to be done according to the curriculum,
             // but is cleaner in this implementation)
@@ -937,7 +961,81 @@
                 : '<h3 class="warning">❌ Not all modules completed yet</h3>';
         }
 
-        // initial render
+		function populateModuleSelect() {
+			const moduleSelect = document.getElementById('moduleSelect');
+			moduleSelect.innerHTML = '';  // Clear existing options
+
+			Object.entries(modules).forEach(([moduleName, module]) => {
+				if (module.submodules) {
+					// If the module has submodules, add each submodule as an option
+					Object.keys(module.submodules).forEach(submoduleName => {
+						const option = document.createElement('option');
+						option.value = `${moduleName}|${submoduleName}`;
+						option.textContent = `${moduleName} - ${submoduleName}`;
+						moduleSelect.appendChild(option);
+					});
+				} else {
+					// If the module does not have submodules, add the module itself as an option
+					const option = document.createElement('option');
+					option.value = moduleName;
+					option.textContent = moduleName;
+					moduleSelect.appendChild(option);
+				}
+			});
+		}
+		function addRecognisedCourse() {
+			const courseName = document.getElementById('newCourseName').value;
+			const courseEcts = parseFloat(document.getElementById('newCourseEcts').value);
+			const selectedModule = document.getElementById('moduleSelect').value;
+
+			if (!courseName || isNaN(courseEcts) || !selectedModule) {
+				alert("Please fill in all fields correctly.");
+				return;
+			}
+
+			// Split value into supermodule and submodule, if applicable
+			const [supermodule, submodule] = selectedModule.includes('|') ? selectedModule.split('|') : [selectedModule, null];
+			recognisedCourses.push({
+				name: courseName,
+				ects: courseEcts,
+				supermodule,
+				submodule,
+				completed: false
+			});
+
+			renderRecognisedCourses();
+			updateProgress();
+		}
+		function renderRecognisedCourses() {
+			const recognisedCoursesList = document.getElementById('recognisedCoursesList');
+			recognisedCoursesList.innerHTML = '';
+
+			recognisedCourses.forEach(course => {
+				const courseDiv = document.createElement('div');
+				courseDiv.className = 'course-item';
+				courseDiv.innerHTML = `
+					<input type="checkbox" id="${course.name}" ${course.completed ? 'checked' : ''}>
+					<label for="${course.name}">
+						${course.name} - 
+						<span class="moduleInfo">
+						  ${course.submodule ? `${course.supermodule} - ${course.submodule}` : course.supermodule}
+						</span> 
+						<span class="ects">(${course.ects} ECTS) 
+					</label>
+				`;
+
+				courseDiv.querySelector('input').addEventListener('change', () => {
+					course.completed = !course.completed;
+					updateProgress();
+				});
+
+				recognisedCoursesList.appendChild(courseDiv);
+			});
+		}
+
+		populateModuleSelect();
+
+		// initial render
         renderCourses();
         updateProgress();
     </script>
