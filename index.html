@@ -921,17 +921,14 @@
             });
 
             totalEctsDiv.innerHTML = `
-                <h3>Total ECTS: ${totalEcts}/120</h3>
-                <div>Extra ECTS (cannot be counted): ${leftoverECTS} ECTS</div>
+                <h3>Total: ${totalEcts}/120 ECTS</h3>
+                <p>Redundant: ${leftoverECTS} ECTS</p>
             `;
 
-            //  <div>Transferable Skills: ${transferableSkillsEcts}/4.5 ECTS</div>
-
-            // check graduation requirements
-
-            graduationStatus.innerHTML = isComplete && totalEcts >= 120 && completedCores >= N_CORES_REQUIRED && transferableSkillsEcts >= 4.5
-                ? '<h3 class="success">✅ All graduation requirements met!</h3>'
-                : '<h3 class="warning">❌ Not all requirements met yet</h3>';
+            // check if all modules are completed
+            graduationStatus.innerHTML = isComplete && totalEcts >= 120 && completedCores >= N_CORES_REQUIRED
+                ? '<h3 class="success">✅ All modules completed!</h3>'
+                : '<h3 class="warning">❌ Not all modules completed yet</h3>';
         }
 
         // initial render
