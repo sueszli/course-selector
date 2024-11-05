@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TU Wien Data Science Course Selector</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        .course-list {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .progress-tracker {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .module {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .course-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .course-item:hover {
+            background: #f5f5f5;
+        }
+        .course-item label {
+            margin-left: 8px;
+            flex-grow: 1;
+        }
+        .ects {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .complete {
+            background: #e8f5e9;
+        }
+        h2 { margin-top: 0; }
+        .warning { color: #f44336; }
+        .success { color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <h1>TU Wien Data Science Course Selector</h1>
+    <div class="container">
+        <div class="course-list">
+            <h2>Available Courses</h2>
+            <div id="courseList"></div>
+        </div>
+        <div class="progress-tracker">
+            <h2>Progress Tracker</h2>
+            <div id="progress"></div>
+            <div id="totalEcts"></div>
+            <div id="graduationStatus"></div>
+        </div>
+    </div>
+
+    <script>
+        const modules = {
+            'Data Science - Foundations': {
+                required: 36,
+                submodules: {
+                    'FDS/FD': { required: 9, current: 0 },
+                    'MLS/FD': { required: 9, current: 0 },
+                    'BDHPC/FD': { required: 9, current: 0 },
+                    'VAST/FD': { required: 9, current: 0 }
+                }
+            },
+            'Domain-Specific Aspects': {
+                required: 9,
+                current: 0
+            },
+            'Key Areas': {
+                required: 12,
+                note: 'Must complete 2 core modules (6 ECTS each)',
+                submodules: {
+                    'FDS/CO': { required: 6, current: 0 },
+                    'MLS/CO': { required: 6, current: 0 },
+                    'BDHPC/CO': { required: 6, current: 0 },
+                    'VAST/CO': { required: 6, current: 0 }
+                }
+            },
+            'Extension Modules': {
+                required: 18,
+                current: 0,
+                note: 'From chosen key areas only'
+            },
+            'Free Choice': {
+                required: 9,
+                current: 0,
+                note: 'Including min 4.5 ECTS Transferable Skills'
+            },
+            'Thesis': {
+                required: 30,
+                current: 0
+            }
+        };
+
+        const courses = [
+            // foundations
+            { name: 'AKSTA Statistical Computing', ects: 3, module: 'FDS/FD' },
+            { name: 'Data-oriented Programming Paradigms', ects: 3, module: 'FDS/FD' },
+            { name: 'Experiment Design for Data Science', ects: 3, module: 'FDS/FD' },
+            { name: 'Advanced Methods for Regression and Classification', ects: 4.5, module: 'MLS/FD' },
+            { name: 'Machine Learning', ects: 4.5, module: 'MLS/FD' },
+            { name: 'Advanced Database Systems', ects: 6, module: 'BDHPC/FD' },
+            { name: 'Data-intensive Computing', ects: 3, module: 'BDHPC/FD' },
+            { name: 'Cognitive Foundations of Visualization', ects: 3, module: 'VAST/FD' },
+            { name: 'Information Visualization', ects: 3, module: 'VAST/FD' },
+            { name: 'Semantic Systems', ects: 3, module: 'VAST/FD' },
+            
+            // domain-specific
+            { name: 'Interdisciplinary Lecture Series on Data Science', ects: 1, module: 'DSA' },
+            { name: 'Interdisciplinary Project in Data Science', ects: 5, module: 'DSA' },
+            
+            // core modules
+            { name: 'Data Acquisition and Survey Methods', ects: 3, module: 'FDS/CO' },
+            { name: 'Data Stewardship', ects: 3, module: 'FDS/CO' },
+            { name: 'Recommender Systems', ects: 3, module: 'MLS/CO' },
+            { name: 'Statistical Simulation and Computer Intensive Methods', ects: 3, module: 'MLS/CO' },
+            { name: 'Basics of Parallel Computing', ects: 3, module: 'BDHPC/CO' },
+            { name: 'Efficient Programs', ects: 3, module: 'BDHPC/CO' },
+            { name: 'Advanced Information Retrieval', ects: 3, module: 'VAST/CO' },
+            { name: 'Design and Evaluation of Visualisations', ects: 3, module: 'VAST/CO' },
+
+            // extension examples (abbreviated list)
+            { name: 'Applied Deep Learning', ects: 3, module: 'MLS/EX' },
+            { name: 'Knowledge Graphs', ects: 3, module: 'VAST/EX' },
+            { name: 'GPU Architectures and Computing', ects: 6, module: 'BDHPC/EX' },
+            { name: 'Digital Humanism', ects: 3, module: 'FDS/EX' },
+
+            // thesis
+            { name: 'Seminar für Diplomand_innen', ects: 1.5, module: 'Thesis' },
+            { name: 'Diplomarbeit', ects: 27, module: 'Thesis' },
+            { name: 'Kommissionelle Abschlussprüfung', ects: 1.5, module: 'Thesis' },
+
+            // transferable skills examples
+            { name: 'Leadership Competency Coaching 1', ects: 3, module: 'Transferable' },
+            { name: 'Research Methods', ects: 3, module: 'Transferable' }
+        ];
+
+        let selectedCourses = new Set();
+
+        function renderCourses() {
+            const courseList = document.getElementById('courseList');
+            courseList.innerHTML = '';
+
+            // group courses by module
+            const groupedCourses = courses.reduce((acc, course) => {
+                const group = acc[course.module] || [];
+                group.push(course);
+                acc[course.module] = group;
+                return acc;
+            }, {});
+
+            // render each group
+            Object.entries(groupedCourses).forEach(([module, moduleCourses]) => {
+                const moduleDiv = document.createElement('div');
+                moduleDiv.className = 'module';
+                moduleDiv.innerHTML = `<h3>${module}</h3>`;
+
+                moduleCourses.forEach(course => {
+                    const courseDiv = document.createElement('div');
+                    courseDiv.className = 'course-item';
+                    courseDiv.innerHTML = `
+                        <input type="checkbox" id="${course.name}" 
+                               ${selectedCourses.has(course.name) ? 'checked' : ''}>
+                        <label for="${course.name}">
+                            ${course.name} 
+                            <span class="ects">(${course.ects} ECTS)</span>
+                        </label>
+                    `;
+
+                    const checkbox = courseDiv.querySelector('input');
+                    checkbox.addEventListener('change', () => {
+                        if (checkbox.checked) {
+                            selectedCourses.add(course.name);
+                        } else {
+                            selectedCourses.delete(course.name);
+                        }
+                        updateProgress();
+                    });
+
+                    moduleDiv.appendChild(courseDiv);
+                });
+
+                courseList.appendChild(moduleDiv);
+            });
+        }
+
+        function updateProgress() {
+            const progress = document.getElementById('progress');
+            const totalEctsDiv = document.getElementById('totalEcts');
+            const graduationStatus = document.getElementById('graduationStatus');
+            
+            // reset current values
+            Object.values(modules).forEach(module => {
+                if (module.submodules) {
+                    Object.values(module.submodules).forEach(submodule => {
+                        submodule.current = 0;
+                    });
+                }
+                if ('current' in module) {
+                    module.current = 0;
+                }
+            });
+
+            // calculate current ECTS for each module
+            let totalEcts = 0;
+            let transferableSkillsEcts = 0;
+
+            selectedCourses.forEach(courseName => {
+                const course = courses.find(c => c.name === courseName);
+                if (!course) return;
+
+                totalEcts += course.ects;
+
+                if (course.module === 'Transferable') {
+                    transferableSkillsEcts += course.ects;
+                    modules['Free Choice'].current += course.ects;
+                } else if (course.module === 'DSA') {
+                    modules['Domain-Specific Aspects'].current += course.ects;
+                } else if (course.module === 'Thesis') {
+                    modules['Thesis'].current += course.ects;
+                } else if (course.module.endsWith('/EX')) {
+                    modules['Extension Modules'].current += course.ects;
+                } else if (course.module.endsWith('/CO')) {
+                    const moduleKey = course.module;
+                    if (modules['Key Areas'].submodules[moduleKey]) {
+                        modules['Key Areas'].submodules[moduleKey].current += course.ects;
+                    }
+                } else if (course.module.endsWith('/FD')) {
+                    const moduleKey = course.module;
+                    if (modules['Data Science - Foundations'].submodules[moduleKey]) {
+                        modules['Data Science - Foundations'].submodules[moduleKey].current += course.ects;
+                    }
+                }
+            });
+
+            // render progress
+            progress.innerHTML = '';
+            let isComplete = true;
+
+            Object.entries(modules).forEach(([name, module]) => {
+                const moduleDiv = document.createElement('div');
+                moduleDiv.className = 'module';
+                
+                let moduleComplete = true;
+                let moduleContent = `<h3>${name}</h3>`;
+
+                if (module.submodules) {
+                    Object.entries(module.submodules).forEach(([subName, sub]) => {
+                        const percent = Math.min(100, (sub.current / sub.required) * 100);
+                        moduleContent += `
+                            <div>${subName}: ${sub.current}/${sub.required} ECTS</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${percent}%"></div>
+                            </div>
+                        `;
+                        if (sub.current < sub.required) moduleComplete = false;
+                    });
+                } else {
+                    const current = module.current || 0;
+                    const percent = Math.min(100, (current / module.required) * 100);
+                    moduleContent += `
+                        <div>${current}/${module.required} ECTS</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                    `;
+                    if (current < module.required) moduleComplete = false;
+                }
+
+                if (module.note) {
+                    moduleContent += `<div class="note"><small>${module.note}</small></div>`;
+                }
+
+                moduleDiv.innerHTML = moduleContent;
+                if (moduleComplete) moduleDiv.classList.add('complete');
+                if (!moduleComplete) isComplete = false;
+
+                progress.appendChild(moduleDiv);
+            });
+
+            totalEctsDiv.innerHTML = `
+                <h3>Total ECTS: ${totalEcts}/120</h3>
+                <div>Transferable Skills: ${transferableSkillsEcts}/4.5 ECTS</div>
+            `;
+
+            // check graduation requirements
+            const completedCores = Object.values(modules['Key Areas'].submodules)
+                .filter(sub => sub.current >= sub.required).length;
+
+            graduationStatus.innerHTML = isComplete && totalEcts >= 120 && completedCores >= 2 && transferableSkillsEcts >= 4.5
+                ? '<h3 class="success">✅ All graduation requirements met!</h3>'
+                : '<h3 class="warning">❌ Not all requirements met yet</h3>';
+        }
+
+        // initial render
+        renderCourses();
+        updateProgress();
+    </script>
+</body>
+</html>
