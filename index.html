@@ -11,7 +11,6 @@
         <div class="course-list">
             <h2>Available Courses</h2>
             <div id="courseList"></div>
-
             <br />
             <div class="recognised-courses">
                 <h2>Recognised Courses</h2>
@@ -35,104 +34,6 @@
     <p>Based on the <a href="https://tiss.tuwien.ac.at/curriculum/public/curriculum.xhtml?&key=67853&locale=en">official curriculum</a>, no guarantee for correctness.</p>
     <p>This site is open source. <a href="https://github.com/sueszli/course-selector">Improve this page.</a></p>
 </body>
-
-<style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: system-ui, -apple-system, sans-serif;
-    line-height: 1.5;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #f5f5f5;
-}
-
-.container {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-}
-
-.course-list {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.progress-tracker {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    position: sticky;
-    top: 20px;
-    height: fit-content;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.module {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.course-item {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-}
-
-.course-item:hover {
-    background: #f5f5f5;
-}
-
-.course-item label {
-    margin-left: 8px;
-    flex-grow: 1;
-}
-
-.ects {
-    color: #666;
-    font-size: 0.9em;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 20px;
-    background: #eee;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 5px 0;
-}
-
-.progress-fill {
-    height: 100%;
-    background: #4caf50;
-    width: 0%;
-    transition: width 0.3s ease;
-}
-
-.complete {
-    background: #e8f5e9;
-}
-
-h2 {
-    margin-top: 0;
-}
-
-.warning {
-    color: #f44336;
-}
-
-.success {
-    color: #4caf50;
-}
-</style>
 
 <script>
 const modules = {
@@ -176,102 +77,115 @@ const modules = {
 };
 
 const courses = [
-    { name: "AKSTA Statistical Computing", ects: 3, module: "FDS/FD", completed: false, },
-    { name: "Data-oriented Programming Paradigms", ects: 3, module: "FDS/FD", completed: false, },
-    { name: "Experiment Design for Data Science", ects: 3, module: "FDS/FD", completed: false, },
-    { name: "Advanced Methods for Regression and Classification", ects: 4.5, module: "MLS/FD", completed: false, },
-    { name: "Machine Learning", ects: 4.5, module: "MLS/FD", completed: false, },
-    { name: "Advanced Database Systems", ects: 6, module: "BDHPC/FD", completed: false, },
-    { name: "Data-intensive Computing", ects: 3, module: "BDHPC/FD", completed: false, },
-    { name: "Cognitive Foundations of Visualization", ects: 3, module: "VAST/FD", completed: false, },
-    { name: "Information Visualization", ects: 3, module: "VAST/FD", completed: false, },
-    { name: "Semantic Systems", ects: 3, module: "VAST/FD", completed: false, },
-    { name: "Interdisciplinary Lecture Series on Data Science", ects: 1, module: "DSA", completed: false, },
-    { name: "Interdisciplinary Project in Data Science", ects: 5, module: "DSA", completed: false, },
-    { name: "Domain-Specific Lectures in Data Science", ects: 3, module: "DSA", completed: false, },
-    { name: "Data Acquisition and Survey Methods", ects: 3, module: "FDS/CO", completed: false, },
-    { name: "Data Stewardship", ects: 3, module: "FDS/CO", completed: false, },
-    { name: "Advanced Cryptography", ects: 6, module: "FDS/EX", completed: false, },
-    { name: "Communicating Data", ects: 3, module: "FDS/EX", completed: false, },
-    { name: "Computational Social Science", ects: 3, module: "FDS/EX", completed: false, },
-    { name: "Data Center Operations", ects: 3, module: "FDS/EX", completed: false, },
-    { name: "Digital Humanism", ects: 3, module: "FDS/EX", completed: false, },
-    { name: "Internet Security", ects: 3, module: "FDS/EX", completed: false, },
-    { name: "Sustainability in Computer Science", ects: 3, module: "FDS/EX", completed: false, },
-    { name: "Symmetric Cryptography", ects: 6, module: "FDS/EX", completed: false, },
-    { name: "Systems and Applications Security", ects: 6, module: "FDS/EX", completed: false, },
-    { name: "User Research Methods", ects: 3, module: "FDS/EX", completed: false, },
-    { name: "Recommender Systems", ects: 3, module: "MLS/CO", completed: false, },
-    { name: "Statistical Simulation and Computer Intensive Methods", ects: 3, module: "MLS/CO", completed: false, },
-    { name: "Advanced Modeling and Simulation", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "AI/ML in the Era of Climate Change", ects: 4, module: "MLS/EX", completed: false, },
-    { name: "Advanced Reinforcement Learning", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Reinforcement Learning", ects: 6, module: "MLS/EX", completed: false, },
-    { name: "Algorithmic Social Choice", ects: 6, module: "MLS/EX", completed: false, },
-    { name: "Applied Deep Learning", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Bayesian Statistics", ects: 5, module: "MLS/EX", completed: false, },
-    { name: "Business Intelligence", ects: 6, module: "MLS/EX", completed: false, },
-    { name: "Deep Learning for Visual Computing", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "General Regression Models", ects: 5, module: "MLS/EX", completed: false, },
-    { name: "Generative AI", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Intelligent Audio and Music Analysis", ects: 4.5, module: "MLS/EX", completed: false, },
-    { name: "Machine Learning for Visual Computing", ects: 4.5, module: "MLS/EX", completed: false, },
-    { name: "Mathematical Programming", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Modeling and Simulation", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Modelling and Simulation in Health Technology Assessment", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Multivariate Statistics", ects: 4.5, module: "MLS/EX", completed: false, },
-    { name: "Probabilistic Programming and AI", ects: 6, module: "MLS/EX", completed: false, },
-    { name: "Problem Solving and Search in Artificial Intelligence", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Security, Privacy and Explainability in Machine Learning", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Self-Organizing Systems", ects: 4.5, module: "MLS/EX", completed: false, },
-    { name: "Similarity Modeling 1", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Similarity Modeling 2", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Social Network Analysis", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Theoretical Foundations and Research Topics in Machine Learning", ects: 3, module: "MLS/EX", completed: false, },
-    { name: "Basics of Parallel Computing", ects: 3, module: "BDHPC/CO", completed: false, },
-    { name: "Efficient Programs", ects: 3, module: "BDHPC/CO", completed: false, },
-    { name: "Advanced Multiprocessor Programming", ects: 4, module: "BDHPC/EX", completed: false, },
-    { name: "Algorithmic Geometry", ects: 4.5, module: "BDHPC/EX", completed: false, },
-    { name: "Algorithmics", ects: 6, module: "BDHPC/EX", completed: false, },
-    { name: "Analysis 2", ects: 4.5, module: "BDHPC/EX", completed: false, },
-    { name: "Approximation Algorithms", ects: 3, module: "BDHPC/EX", completed: false, },
-    { name: "Complexity Analysis", ects: 3, module: "BDHPC/EX", completed: false, },
-    { name: "Database Theory", ects: 3, module: "BDHPC/EX", completed: false, },
-    { name: "Fixed-Parameter Algorithms and Complexity", ects: 4.5, module: "BDHPC/EX", completed: false, },
-    { name: "Frontiers of Algorithms and Complexity", ects: 3, module: "BDHPC/EX", completed: false, },
-    { name: "GPU Architectures and Computing", ects: 6, module: "BDHPC/EX", completed: false, },
-    { name: "Graph Drawing Algorithms", ects: 4.5, module: "BDHPC/EX", completed: false, },
-    { name: "Hands-On Cloud Native", ects: 6, module: "BDHPC/EX", completed: false, },
-    { name: "Heuristic Optimization Techniques", ects: 4.5, module: "BDHPC/EX", completed: false, },
-    { name: "High Performance Computing", ects: 4.5, module: "BDHPC/EX", completed: false, },
-    { name: "Hybrid Classic-Quantum Systems", ects: 4.5, module: "BDHPC/EX", completed: false, },
-    { name: "Nonlinear Optimization (VO)", ects: 3, module: "BDHPC/EX", completed: false, },
-    { name: "Nonlinear Optimization (UE)", ects: 2, module: "BDHPC/EX", completed: false, },
-    { name: "Optimization in Transport and Logistics", ects: 3, module: "BDHPC/EX", completed: false, },
-    { name: "Randomized Algorithms", ects: 3, module: "BDHPC/EX", completed: false, },
-    { name: "Structural Decompositions and Algorithms", ects: 3, module: "BDHPC/EX", completed: false, },
-    { name: "Advanced Information Retrieval", ects: 3, module: "VAST/CO", completed: false, },
-    { name: "Design and Evaluation of Visualisations", ects: 3, module: "VAST/CO", completed: false, },
-    { name: "Deductive Databases", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Description Logics and Ontologies", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Document Analysis", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Information Visualization", ects: 1.5, module: "VAST/EX", completed: false, },
-    { name: "Knowledge-based Systems", ects: 6, module: "VAST/EX", completed: false, },
-    { name: "Knowledge Graphs", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Medical Image Processing", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Natural Language Processing and Information Extraction", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Processing of Declarative Knowledge", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Real-time Visualization", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Research Topics in Natural Language Processing", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Semantic Web Technologies", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Semi-Automatic Information and Knowledge Systems", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Visual Data Science", ects: 3, module: "VAST/EX", completed: false, },
-    { name: "Visualization 2", ects: 4.5, module: "VAST/EX", completed: false, },
-    { name: "Seminar für Diplomand_innen", ects: 1.5, module: "Thesis", completed: false, },
-    { name: "Diplomarbeit", ects: 27, module: "Thesis", completed: false, },
-    { name: "Defense / Kommissionelle Abschlussprüfung", ects: 1.5, module: "Thesis", completed: false, },
-    { name: "Transferable skills courses (see catalogue)", ects: 4.5, module: "Transferable", completed: false, },
-    { name: "Arbitrary courses", ects: 4.5, module: "Transferable", completed: false, },
+    // mandatory
+    { name: "AKSTA Statistical Computing", ects: 3, module: "FDS/FD", completed: false },
+    { name: "Data-oriented Programming Paradigms", ects: 3, module: "FDS/FD", completed: false },
+    { name: "Experiment Design for Data Science", ects: 3, module: "FDS/FD", completed: false },
+    { name: "Advanced Methods for Regression and Classification", ects: 4.5, module: "MLS/FD", completed: false },
+    { name: "Machine Learning", ects: 4.5, module: "MLS/FD", completed: false },
+    { name: "Advanced Database Systems", ects: 6, module: "BDHPC/FD", completed: false },
+    { name: "Data-intensive Computing", ects: 3, module: "BDHPC/FD", completed: false },
+    { name: "Cognitive Foundations of Visualization", ects: 3, module: "VAST/FD", completed: false },
+    { name: "Information Visualization", ects: 3, module: "VAST/FD", completed: false },
+    { name: "Semantic Systems", ects: 3, module: "VAST/FD", completed: false },
+    { name: "Interdisciplinary Lecture Series on Data Science", ects: 1, module: "DSA", completed: false },
+    { name: "Interdisciplinary Project in Data Science", ects: 5, module: "DSA", completed: false },
+    { name: "Domain-Specific Lectures in Data Science", ects: 3, module: "DSA", completed: false },
+
+    // fds module
+    { name: "Data Acquisition and Survey Methods", ects: 3, module: "FDS/CO", completed: false },
+    { name: "Data Stewardship", ects: 3, module: "FDS/CO", completed: false },
+    { name: "Advanced Cryptography", ects: 6, module: "FDS/EX", completed: false },
+    { name: "Communicating Data", ects: 3, module: "FDS/EX", completed: false },
+    { name: "Computational Social Science", ects: 3, module: "FDS/EX", completed: false },
+    { name: "Data Center Operations", ects: 3, module: "FDS/EX", completed: false },
+    { name: "Digital Humanism", ects: 3, module: "FDS/EX", completed: false },
+    { name: "Internet Security", ects: 3, module: "FDS/EX", completed: false },
+    { name: "Sustainability in Computer Science", ects: 3, module: "FDS/EX", completed: false },
+    { name: "Symmetric Cryptography", ects: 6, module: "FDS/EX", completed: false },
+    { name: "Systems and Applications Security", ects: 6, module: "FDS/EX", completed: false },
+    { name: "User Research Methods", ects: 3, module: "FDS/EX", completed: false },
+
+    // mls module
+    { name: "Recommender Systems", ects: 3, module: "MLS/CO", completed: false },
+    { name: "Statistical Simulation and Computer Intensive Methods", ects: 3, module: "MLS/CO", completed: false },
+    { name: "Advanced Modeling and Simulation", ects: 3, module: "MLS/EX", completed: false },
+    { name: "AI/ML in the Era of Climate Change", ects: 4, module: "MLS/EX", completed: false },
+    { name: "Advanced Reinforcement Learning", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Reinforcement Learning", ects: 6, module: "MLS/EX", completed: false },
+    { name: "Algorithmic Social Choice", ects: 6, module: "MLS/EX", completed: false },
+    { name: "Applied Deep Learning", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Bayesian Statistics", ects: 5, module: "MLS/EX", completed: false },
+    { name: "Business Intelligence", ects: 6, module: "MLS/EX", completed: false },
+    { name: "Deep Learning for Visual Computing", ects: 3, module: "MLS/EX", completed: false },
+    { name: "General Regression Models", ects: 5, module: "MLS/EX", completed: false },
+    { name: "Generative AI", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Intelligent Audio and Music Analysis", ects: 4.5, module: "MLS/EX", completed: false },
+    { name: "Machine Learning for Visual Computing", ects: 4.5, module: "MLS/EX", completed: false },
+    { name: "Mathematical Programming", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Modeling and Simulation", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Modelling and Simulation in Health Technology Assessment", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Multivariate Statistics", ects: 4.5, module: "MLS/EX", completed: false },
+    { name: "Probabilistic Programming and AI", ects: 6, module: "MLS/EX", completed: false },
+    { name: "Problem Solving and Search in Artificial Intelligence", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Security, Privacy and Explainability in Machine Learning", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Self-Organizing Systems", ects: 4.5, module: "MLS/EX", completed: false },
+    { name: "Similarity Modeling 1", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Similarity Modeling 2", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Social Network Analysis", ects: 3, module: "MLS/EX", completed: false },
+    { name: "Theoretical Foundations and Research Topics in Machine Learning", ects: 3, module: "MLS/EX", completed: false },
+    
+    // bdhpc module
+    { name: "Basics of Parallel Computing", ects: 3, module: "BDHPC/CO", completed: false },
+    { name: "Efficient Programs", ects: 3, module: "BDHPC/CO", completed: false },
+    { name: "Advanced Multiprocessor Programming", ects: 4, module: "BDHPC/EX", completed: false },
+    { name: "Algorithmic Geometry", ects: 4.5, module: "BDHPC/EX", completed: false },
+    { name: "Algorithmics", ects: 6, module: "BDHPC/EX", completed: false },
+    { name: "Analysis 2", ects: 4.5, module: "BDHPC/EX", completed: false },
+    { name: "Approximation Algorithms", ects: 3, module: "BDHPC/EX", completed: false },
+    { name: "Complexity Analysis", ects: 3, module: "BDHPC/EX", completed: false },
+    { name: "Database Theory", ects: 3, module: "BDHPC/EX", completed: false },
+    { name: "Fixed-Parameter Algorithms and Complexity", ects: 4.5, module: "BDHPC/EX", completed: false },
+    { name: "Frontiers of Algorithms and Complexity", ects: 3, module: "BDHPC/EX", completed: false },
+    { name: "GPU Architectures and Computing", ects: 6, module: "BDHPC/EX", completed: false },
+    { name: "Graph Drawing Algorithms", ects: 4.5, module: "BDHPC/EX", completed: false },
+    { name: "Hands-On Cloud Native", ects: 6, module: "BDHPC/EX", completed: false },
+    { name: "Heuristic Optimization Techniques", ects: 4.5, module: "BDHPC/EX", completed: false },
+    { name: "High Performance Computing", ects: 4.5, module: "BDHPC/EX", completed: false },
+    { name: "Hybrid Classic-Quantum Systems", ects: 4.5, module: "BDHPC/EX", completed: false },
+    { name: "Nonlinear Optimization (VO)", ects: 3, module: "BDHPC/EX", completed: false },
+    { name: "Nonlinear Optimization (UE)", ects: 2, module: "BDHPC/EX", completed: false },
+    { name: "Optimization in Transport and Logistics", ects: 3, module: "BDHPC/EX", completed: false },
+    { name: "Randomized Algorithms", ects: 3, module: "BDHPC/EX", completed: false },
+    { name: "Structural Decompositions and Algorithms", ects: 3, module: "BDHPC/EX", completed: false },
+
+    // vast module
+    { name: "Advanced Information Retrieval", ects: 3, module: "VAST/CO", completed: false },
+    { name: "Design and Evaluation of Visualisations", ects: 3, module: "VAST/CO", completed: false },
+    { name: "Deductive Databases", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Description Logics and Ontologies", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Document Analysis", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Information Visualization", ects: 1.5, module: "VAST/EX", completed: false },
+    { name: "Knowledge-based Systems", ects: 6, module: "VAST/EX", completed: false },
+    { name: "Knowledge Graphs", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Medical Image Processing", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Natural Language Processing and Information Extraction", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Processing of Declarative Knowledge", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Real-time Visualization", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Research Topics in Natural Language Processing", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Semantic Web Technologies", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Semi-Automatic Information and Knowledge Systems", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Visual Data Science", ects: 3, module: "VAST/EX", completed: false },
+    { name: "Visualization 2", ects: 4.5, module: "VAST/EX", completed: false },
+
+    // thesis module
+    { name: "Seminar für Diplomand_innen", ects: 1.5, module: "Thesis", completed: false },
+    { name: "Diplomarbeit", ects: 27, module: "Thesis", completed: false },
+    { name: "Defense / Kommissionelle Abschlussprüfung", ects: 1.5, module: "Thesis", completed: false },
+
+    // transferable skill module
+    { name: "Transferable skills courses (see catalogue)", ects: 4.5, module: "Transferable", completed: false },
+    { name: "Arbitrary courses", ects: 4.5, module: "Transferable", completed: false },
 ];
 const recognisedCourses = [];
 
@@ -574,4 +488,95 @@ renderCourses();
 updateProgress();
 
 </script>
+
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.course-list {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progress-tracker {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.module {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.course-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.course-item:hover {
+    background: #f5f5f5;
+}
+
+.course-item label {
+    margin-left: 8px;
+    flex-grow: 1;
+}
+
+.ects {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 5px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #4caf50;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.complete { background: #e8f5e9; }
+.warning { color: #f44336; }
+.success { color: #4caf50; }
+</style>    
 </html>
