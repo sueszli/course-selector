@@ -128,7 +128,7 @@
                 current: 0,
                 note: 'From chosen key areas only'
             },
-            'Free Choice': {
+            'Free Choice & Transferable': {
                 required: 9,
                 current: 0,
                 note: 'Including min 4.5 ECTS Transferable Skills'
@@ -161,6 +161,7 @@
             // Domain-specific Aspects (DSA)
             { name: 'Interdisciplinary Lecture Series on Data Science', ects: 1, module: 'DSA' },
             { name: 'Interdisciplinary Project in Data Science', ects: 5, module: 'DSA' },
+            { name: 'Domain-Specific Lectures in Data Science', ects: 3, module: 'DSA' },
             
             // FDS Core and Extension
             { name: 'Data Acquisition and Survey Methods', ects: 3, module: 'FDS/CO' },
@@ -188,33 +189,73 @@
             { name: 'Bayesian Statistics', ects: 5, module: 'MLS/EX' },
             { name: 'Business Intelligence', ects: 6, module: 'MLS/EX' },
             { name: 'Deep Learning for Visual Computing', ects: 3, module: 'MLS/EX' },
-            
+            { name: 'General Regression Models', ects: 5, module: 'MLS/EX' },
+            { name: 'Generative AI', ects: 3, module: 'MLS/EX' },
+            { name: 'Intelligent Audio and Music Analysis', ects: 4.5, module: 'MLS/EX' },
+            { name: 'Machine Learning for Visual Computing', ects: 4.5, module: 'MLS/EX' },
+            { name: 'Mathematical Programming', ects: 3, module: 'MLS/EX' },
+            { name: 'Modeling and Simulation', ects: 3, module: 'MLS/EX' },
+            { name: 'Modelling and Simulation in Health Technology Assessment', ects: 3, module: 'MLS/EX' },
+            { name: 'Multivariate Statistics', ects: 4.5, module: 'MLS/EX' },
+            { name: 'Probabilistic Programming and AI', ects: 6, module: 'MLS/EX' },
+            { name: 'Problem Solving and Search in Artificial Intelligence', ects: 3, module: 'MLS/EX' },
+            { name: 'Security, Privacy and Explainability in Machine Learning', ects: 3, module: 'MLS/EX' },
+            { name: 'Self-Organizing Systems', ects: 4.5, module: 'MLS/EX' },
+            { name: 'Similarity Modeling 1', ects: 3, module: 'MLS/EX' },
+            { name: 'Similarity Modeling 2', ects: 3, module: 'MLS/EX' },
+            { name: 'Social Network Analysis', ects: 3, module: 'MLS/EX' },
+            { name: 'Theoretical Foundations and Research Topics in Machine Learning', ects: 3, module: 'MLS/EX' },
+
             // BDHPC Core and Extension
             { name: 'Basics of Parallel Computing', ects: 3, module: 'BDHPC/CO' },
             { name: 'Efficient Programs', ects: 3, module: 'BDHPC/CO' },
             { name: 'Advanced Multiprocessor Programming', ects: 4, module: 'BDHPC/EX' },
             { name: 'Algorithmic Geometry', ects: 4.5, module: 'BDHPC/EX' },
+            { name: 'Algorithmics', ects: 6, module: 'BDHPC/EX' },
+            { name: 'Analysis 2', ects: 4.5, module: 'BDHPC/EX' },
+            { name: 'Approximation Algorithms', ects: 3, module: 'BDHPC/EX' },
+            { name: 'Complexity Analysis', ects: 3, module: 'BDHPC/EX' },
+            { name: 'Database Theory', ects: 3, module: 'BDHPC/EX' },
+            { name: 'Fixed-Parameter Algorithms and Complexity', ects: 4.5, module: 'BDHPC/EX' },
+            { name: 'Frontiers of Algorithms and Complexity', ects: 3, module: 'BDHPC/EX' },
             { name: 'GPU Architectures and Computing', ects: 6, module: 'BDHPC/EX' },
+            { name: 'Graph Drawing Algorithms', ects: 4.5, module: 'BDHPC/EX' },
+            { name: 'Hands-On Cloud Native', ects: 6, module: 'BDHPC/EX' },
+            { name: 'Heuristic Optimization Techniques', ects: 4.5, module: 'BDHPC/EX' },
             { name: 'High Performance Computing', ects: 4.5, module: 'BDHPC/EX' },
-            
+            { name: 'Hybrid Classic-Quantum Systems', ects: 4.5, module: 'BDHPC/EX' },
+            { name: 'Nonlinear Optimization', ects: 3, module: 'BDHPC/EX' },
+            { name: 'Optimization in Transport and Logistics', ects: 3, module: 'BDHPC/EX' },
+            { name: 'Randomized Algorithms', ects: 3, module: 'BDHPC/EX' },
+            { name: 'Structural Decompositions and Algorithms', ects: 3, module: 'BDHPC/EX' },
+
             // VAST Core and Extension
             { name: 'Advanced Information Retrieval', ects: 3, module: 'VAST/CO' },
             { name: 'Design and Evaluation of Visualisations', ects: 3, module: 'VAST/CO' },
+            { name: 'Deductive Databases', ects: 3, module: 'VAST/EX' },
+            { name: 'Description Logics and Ontologies', ects: 3, module: 'VAST/EX' },
+            { name: 'Document Analysis', ects: 3, module: 'VAST/EX' },
+            { name: 'Information Visualization', ects: 1.5, module: 'VAST/EX' },
+            { name: 'Knowledge-based Systems', ects: 6, module: 'VAST/EX' },
             { name: 'Knowledge Graphs', ects: 3, module: 'VAST/EX' },
+            { name: 'Medical Image Processing', ects: 3, module: 'VAST/EX' },
+            { name: 'Natural Language Processing and Information Extraction', ects: 3, module: 'VAST/EX' },
+            { name: 'Processing of Declarative Knowledge', ects: 3, module: 'VAST/EX' },
+            { name: 'Real-time Visualization', ects: 3, module: 'VAST/EX' },
+            { name: 'Research Topics in Natural Language Processing', ects: 3, module: 'VAST/EX' },
+            { name: 'Semantic Web Technologies', ects: 3, module: 'VAST/EX' },
+            { name: 'Semi-Automatic Information and Knowledge Systems', ects: 3, module: 'VAST/EX' },
             { name: 'Visual Data Science', ects: 3, module: 'VAST/EX' },
             { name: 'Visualization 2', ects: 4.5, module: 'VAST/EX' },
-            
+
             // Thesis
             { name: 'Seminar für Diplomand_innen', ects: 1.5, module: 'Thesis' },
             { name: 'Diplomarbeit', ects: 27, module: 'Thesis' },
-            { name: 'Kommissionelle Abschlussprüfung', ects: 1.5, module: 'Thesis' },
+            { name: 'Defense / Kommissionelle Abschlussprüfung', ects: 1.5, module: 'Thesis' },
             
             // Transferable Skills
-            { name: 'Leadership Competency Coaching 1', ects: 3, module: 'Transferable' },
-            { name: 'Research Methods', ects: 3, module: 'Transferable' },
-            { name: 'Group Dynamics', ects: 3, module: 'Transferable' },
-            { name: 'Communication and rhetoric', ects: 3, module: 'Transferable' },
-            { name: 'Presentation and Moderation', ects: 3, module: 'Transferable' }
+            { name: 'Transferable skills courses (see catalogue)', ects: 4.5, module: 'Transferable' },
+            { name: 'Arbitrary courses', ects: 4.5, module: 'Transferable' },
         ];
         let selectedCourses = new Set();
 
