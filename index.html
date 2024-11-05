@@ -257,10 +257,7 @@ function updateProgress() {
     });
 
     function sumECTSInModule(module) {
-        return module
-            .filter((course) => course.completed)
-            .map((course) => course.ects)
-            .reduce((acc, curr) => acc + curr, 0);
+        return module.filter((course) => course.completed).map((course) => course.ects).reduce((acc, curr) => acc + curr, 0);
     }
 
     // calculate current ECTS for each module
@@ -338,12 +335,7 @@ function updateProgress() {
 
     let totalEcts = Object.values(modules)
         .map((module) => {
-            return (
-                module.current ??
-                Object.values(module.submodules)
-                    .map((submodule) => submodule.current)
-                    .reduce((acc, curr) => acc + curr)
-            );
+            return (module.current ?? Object.values(module.submodules).map((submodule) => submodule.current).reduce((acc, curr) => acc + curr));
         })
         .reduce((acc, curr) => acc + curr);
 
