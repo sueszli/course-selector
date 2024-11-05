@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Selector</title>
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: system-ui, -apple-system, sans-serif;
             line-height: 1.5;
@@ -14,17 +18,20 @@
             padding: 20px;
             background: #f5f5f5;
         }
+
         .container {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 20px;
         }
+
         .course-list {
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .progress-tracker {
             background: white;
             padding: 20px;
@@ -32,31 +39,37 @@
             position: sticky;
             top: 20px;
             height: fit-content;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .module {
             margin-bottom: 10px;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         .course-item {
             display: flex;
             align-items: center;
             padding: 8px;
             border-bottom: 1px solid #eee;
         }
+
         .course-item:hover {
             background: #f5f5f5;
         }
+
         .course-item label {
             margin-left: 8px;
             flex-grow: 1;
         }
+
         .ects {
             color: #666;
             font-size: 0.9em;
         }
+
         .progress-bar {
             width: 100%;
             height: 20px;
@@ -65,20 +78,32 @@
             overflow: hidden;
             margin: 5px 0;
         }
+
         .progress-fill {
             height: 100%;
             background: #4CAF50;
             width: 0%;
             transition: width 0.3s ease;
         }
+
         .complete {
             background: #e8f5e9;
         }
-        h2 { margin-top: 0; }
-        .warning { color: #f44336; }
-        .success { color: #4CAF50; }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .warning {
+            color: #f44336;
+        }
+
+        .success {
+            color: #4CAF50;
+        }
     </style>
 </head>
+
 <body>
     <h1>TU Wien Data Science Course Selector</h1>
     <div class="container">
@@ -94,7 +119,8 @@
         </div>
     </div>
     <br>
-    <p>Based on the <a href="https://tiss.tuwien.ac.at/curriculum/public/curriculum.xhtml?&key=67853&locale=en">official curriculum</a>, no guarantee for correctness.
+    <p>Based on the <a href="https://tiss.tuwien.ac.at/curriculum/public/curriculum.xhtml?&key=67853&locale=en">official
+            curriculum</a>, no guarantee for correctness.
     </p>
     <p>This site is open source. <a href="https://github.com/sueszli/course-selector">Improve this page.</a></p>
 
@@ -115,7 +141,7 @@
             },
             'Key Areas': {
                 required: 12,
-                note: 'Must complete 2 core modules (6 ECTS each)',
+                note: 'Must complete 2 core modules (6 ECTS each). If more than 2 are completed, then the credits from the extra core(s) (chosen randomly) are counted towards Extension/Free Choice.',
                 submodules: {
                     'FDS/CO': { required: 6, current: 0 },
                     'MLS/CO': { required: 6, current: 0 },
@@ -124,7 +150,7 @@
                 }
             },
             'Extension Modules': {
-                required: 18,
+                required: 24,
                 current: 0,
                 note: 'From chosen key areas only'
             },
@@ -140,124 +166,588 @@
         };
 
         const courses = [
-            // Data Science - Foundations (FDS/FD)
-            { name: 'AKSTA Statistical Computing', ects: 3, module: 'FDS/FD' },
-            { name: 'Data-oriented Programming Paradigms', ects: 3, module: 'FDS/FD' },
-            { name: 'Experiment Design for Data Science', ects: 3, module: 'FDS/FD' },
-            
-            // Machine Learning and Statistics - Foundations (MLS/FD)
-            { name: 'Advanced Methods for Regression and Classification', ects: 4.5, module: 'MLS/FD' },
-            { name: 'Machine Learning', ects: 4.5, module: 'MLS/FD' },
-            
-            // Big Data and HPC - Foundations (BDHPC/FD)
-            { name: 'Advanced Database Systems', ects: 6, module: 'BDHPC/FD' },
-            { name: 'Data-intensive Computing', ects: 3, module: 'BDHPC/FD' },
-            
-            // Visual Analytics - Foundations (VAST/FD)
-            { name: 'Cognitive Foundations of Visualization', ects: 3, module: 'VAST/FD' },
-            { name: 'Information Visualization', ects: 3, module: 'VAST/FD' },
-            { name: 'Semantic Systems', ects: 3, module: 'VAST/FD' },
-            
-            // Domain-specific Aspects (DSA)
-            { name: 'Interdisciplinary Lecture Series on Data Science', ects: 1, module: 'DSA' },
-            { name: 'Interdisciplinary Project in Data Science', ects: 5, module: 'DSA' },
-            { name: 'Domain-Specific Lectures in Data Science', ects: 3, module: 'DSA' },
-            
-            // FDS Core and Extension
-            { name: 'Data Acquisition and Survey Methods', ects: 3, module: 'FDS/CO' },
-            { name: 'Data Stewardship', ects: 3, module: 'FDS/CO' },
-            { name: 'Advanced Cryptography', ects: 6, module: 'FDS/EX' },
-            { name: 'Communicating Data', ects: 3, module: 'FDS/EX' },
-            { name: 'Computational Social Science', ects: 3, module: 'FDS/EX' },
-            { name: 'Data Center Operations', ects: 3, module: 'FDS/EX' },
-            { name: 'Digital Humanism', ects: 3, module: 'FDS/EX' },
-            { name: 'Internet Security', ects: 3, module: 'FDS/EX' },
-            { name: 'Sustainability in Computer Science', ects: 3, module: 'FDS/EX' },
-            { name: 'Symmetric Cryptography', ects: 6, module: 'FDS/EX' },
-            { name: 'Systems and Applications Security', ects: 6, module: 'FDS/EX' },
-            { name: 'User Research Methods', ects: 3, module: 'FDS/EX' },
-            
-            // MLS Core and Extension
-            { name: 'Recommender Systems', ects: 3, module: 'MLS/CO' },
-            { name: 'Statistical Simulation and Computer Intensive Methods', ects: 3, module: 'MLS/CO' },
-            { name: 'Advanced Modeling and Simulation', ects: 3, module: 'MLS/EX' },
-            { name: 'AI/ML in the Era of Climate Change', ects: 4, module: 'MLS/EX' },
-            { name: 'Advanced Reinforcement Learning', ects: 3, module: 'MLS/EX' },
-            { name: 'Reinforcement Learning', ects: 6, module: 'MLS/EX' },
-            { name: 'Algorithmic Social Choice', ects: 6, module: 'MLS/EX' },
-            { name: 'Applied Deep Learning', ects: 3, module: 'MLS/EX' },
-            { name: 'Bayesian Statistics', ects: 5, module: 'MLS/EX' },
-            { name: 'Business Intelligence', ects: 6, module: 'MLS/EX' },
-            { name: 'Deep Learning for Visual Computing', ects: 3, module: 'MLS/EX' },
-            { name: 'General Regression Models', ects: 5, module: 'MLS/EX' },
-            { name: 'Generative AI', ects: 3, module: 'MLS/EX' },
-            { name: 'Intelligent Audio and Music Analysis', ects: 4.5, module: 'MLS/EX' },
-            { name: 'Machine Learning for Visual Computing', ects: 4.5, module: 'MLS/EX' },
-            { name: 'Mathematical Programming', ects: 3, module: 'MLS/EX' },
-            { name: 'Modeling and Simulation', ects: 3, module: 'MLS/EX' },
-            { name: 'Modelling and Simulation in Health Technology Assessment', ects: 3, module: 'MLS/EX' },
-            { name: 'Multivariate Statistics', ects: 4.5, module: 'MLS/EX' },
-            { name: 'Probabilistic Programming and AI', ects: 6, module: 'MLS/EX' },
-            { name: 'Problem Solving and Search in Artificial Intelligence', ects: 3, module: 'MLS/EX' },
-            { name: 'Security, Privacy and Explainability in Machine Learning', ects: 3, module: 'MLS/EX' },
-            { name: 'Self-Organizing Systems', ects: 4.5, module: 'MLS/EX' },
-            { name: 'Similarity Modeling 1', ects: 3, module: 'MLS/EX' },
-            { name: 'Similarity Modeling 2', ects: 3, module: 'MLS/EX' },
-            { name: 'Social Network Analysis', ects: 3, module: 'MLS/EX' },
-            { name: 'Theoretical Foundations and Research Topics in Machine Learning', ects: 3, module: 'MLS/EX' },
+            {
+                "name": "AKSTA Statistical Computing",
+                "ects": 3,
+                "module": "FDS/FD",
+                "completed": false
+            },
+            {
+                "name": "Data-oriented Programming Paradigms",
+                "ects": 3,
+                "module": "FDS/FD",
+                "completed": false
+            },
+            {
+                "name": "Experiment Design for Data Science",
+                "ects": 3,
+                "module": "FDS/FD",
+                "completed": false
+            },
+            {
+                "name": "Advanced Methods for Regression and Classification",
+                "ects": 4.5,
+                "module": "MLS/FD",
+                "completed": false
+            },
+            {
+                "name": "Machine Learning",
+                "ects": 4.5,
+                "module": "MLS/FD",
+                "completed": false
+            },
+            {
+                "name": "Advanced Database Systems",
+                "ects": 6,
+                "module": "BDHPC/FD",
+                "completed": false
+            },
+            {
+                "name": "Data-intensive Computing",
+                "ects": 3,
+                "module": "BDHPC/FD",
+                "completed": false
+            },
+            {
+                "name": "Cognitive Foundations of Visualization",
+                "ects": 3,
+                "module": "VAST/FD",
+                "completed": false
+            },
+            {
+                "name": "Information Visualization",
+                "ects": 3,
+                "module": "VAST/FD",
+                "completed": false
+            },
+            {
+                "name": "Semantic Systems",
+                "ects": 3,
+                "module": "VAST/FD",
+                "completed": false
+            },
+            {
+                "name": "Interdisciplinary Lecture Series on Data Science",
+                "ects": 1,
+                "module": "DSA",
+                "completed": false
+            },
+            {
+                "name": "Interdisciplinary Project in Data Science",
+                "ects": 5,
+                "module": "DSA",
+                "completed": false
+            },
+            {
+                "name": "Domain-Specific Lectures in Data Science",
+                "ects": 3,
+                "module": "DSA",
+                "completed": false
+            },
+            {
+                "name": "Data Acquisition and Survey Methods",
+                "ects": 3,
+                "module": "FDS/CO",
+                "completed": false
+            },
+            {
+                "name": "Data Stewardship",
+                "ects": 3,
+                "module": "FDS/CO",
+                "completed": false
+            },
+            {
+                "name": "Advanced Cryptography",
+                "ects": 6,
+                "module": "FDS/EX",
+                "completed": false
+            },
+            {
+                "name": "Communicating Data",
+                "ects": 3,
+                "module": "FDS/EX",
+                "completed": false
+            },
+            {
+                "name": "Computational Social Science",
+                "ects": 3,
+                "module": "FDS/EX",
+                "completed": false
+            },
+            {
+                "name": "Data Center Operations",
+                "ects": 3,
+                "module": "FDS/EX",
+                "completed": false
+            },
+            {
+                "name": "Digital Humanism",
+                "ects": 3,
+                "module": "FDS/EX",
+                "completed": false
+            },
+            {
+                "name": "Internet Security",
+                "ects": 3,
+                "module": "FDS/EX",
+                "completed": false
+            },
+            {
+                "name": "Sustainability in Computer Science",
+                "ects": 3,
+                "module": "FDS/EX",
+                "completed": false
+            },
+            {
+                "name": "Symmetric Cryptography",
+                "ects": 6,
+                "module": "FDS/EX",
+                "completed": false
+            },
+            {
+                "name": "Systems and Applications Security",
+                "ects": 6,
+                "module": "FDS/EX",
+                "completed": false
+            },
+            {
+                "name": "User Research Methods",
+                "ects": 3,
+                "module": "FDS/EX",
+                "completed": false
+            },
+            {
+                "name": "Recommender Systems",
+                "ects": 3,
+                "module": "MLS/CO",
+                "completed": false
+            },
+            {
+                "name": "Statistical Simulation and Computer Intensive Methods",
+                "ects": 3,
+                "module": "MLS/CO",
+                "completed": false
+            },
+            {
+                "name": "Advanced Modeling and Simulation",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "AI/ML in the Era of Climate Change",
+                "ects": 4,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Advanced Reinforcement Learning",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Reinforcement Learning",
+                "ects": 6,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Algorithmic Social Choice",
+                "ects": 6,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Applied Deep Learning",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Bayesian Statistics",
+                "ects": 5,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Business Intelligence",
+                "ects": 6,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Deep Learning for Visual Computing",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "General Regression Models",
+                "ects": 5,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Generative AI",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Intelligent Audio and Music Analysis",
+                "ects": 4.5,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Machine Learning for Visual Computing",
+                "ects": 4.5,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Mathematical Programming",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Modeling and Simulation",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Modelling and Simulation in Health Technology Assessment",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Multivariate Statistics",
+                "ects": 4.5,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Probabilistic Programming and AI",
+                "ects": 6,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Problem Solving and Search in Artificial Intelligence",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Security, Privacy and Explainability in Machine Learning",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Self-Organizing Systems",
+                "ects": 4.5,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Similarity Modeling 1",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Similarity Modeling 2",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Social Network Analysis",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Theoretical Foundations and Research Topics in Machine Learning",
+                "ects": 3,
+                "module": "MLS/EX",
+                "completed": false
+            },
+            {
+                "name": "Basics of Parallel Computing",
+                "ects": 3,
+                "module": "BDHPC/CO",
+                "completed": false
+            },
+            {
+                "name": "Efficient Programs",
+                "ects": 3,
+                "module": "BDHPC/CO",
+                "completed": false
+            },
+            {
+                "name": "Advanced Multiprocessor Programming",
+                "ects": 4,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Algorithmic Geometry",
+                "ects": 4.5,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Algorithmics",
+                "ects": 6,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Analysis 2",
+                "ects": 4.5,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Approximation Algorithms",
+                "ects": 3,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Complexity Analysis",
+                "ects": 3,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Database Theory",
+                "ects": 3,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Fixed-Parameter Algorithms and Complexity",
+                "ects": 4.5,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Frontiers of Algorithms and Complexity",
+                "ects": 3,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "GPU Architectures and Computing",
+                "ects": 6,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Graph Drawing Algorithms",
+                "ects": 4.5,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Hands-On Cloud Native",
+                "ects": 6,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Heuristic Optimization Techniques",
+                "ects": 4.5,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "High Performance Computing",
+                "ects": 4.5,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Hybrid Classic-Quantum Systems",
+                "ects": 4.5,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Nonlinear Optimization",
+                "ects": 3,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Optimization in Transport and Logistics",
+                "ects": 3,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Randomized Algorithms",
+                "ects": 3,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Structural Decompositions and Algorithms",
+                "ects": 3,
+                "module": "BDHPC/EX",
+                "completed": false
+            },
+            {
+                "name": "Advanced Information Retrieval",
+                "ects": 3,
+                "module": "VAST/CO",
+                "completed": false
+            },
+            {
+                "name": "Design and Evaluation of Visualisations",
+                "ects": 3,
+                "module": "VAST/CO",
+                "completed": false
+            },
+            {
+                "name": "Deductive Databases",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Description Logics and Ontologies",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Document Analysis",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Information Visualization",
+                "ects": 1.5,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Knowledge-based Systems",
+                "ects": 6,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Knowledge Graphs",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Medical Image Processing",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Natural Language Processing and Information Extraction",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Processing of Declarative Knowledge",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Real-time Visualization",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Research Topics in Natural Language Processing",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Semantic Web Technologies",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Semi-Automatic Information and Knowledge Systems",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Visual Data Science",
+                "ects": 3,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Visualization 2",
+                "ects": 4.5,
+                "module": "VAST/EX",
+                "completed": false
+            },
+            {
+                "name": "Seminar für Diplomand_innen",
+                "ects": 1.5,
+                "module": "Thesis",
+                "completed": false
+            },
+            {
+                "name": "Diplomarbeit",
+                "ects": 27,
+                "module": "Thesis",
+                "completed": false
+            },
+            {
+                "name": "Defense / Kommissionelle Abschlussprüfung",
+                "ects": 1.5,
+                "module": "Thesis",
+                "completed": false
+            },
+            {
+                "name": "Transferable skills courses (see catalogue)",
+                "ects": 4.5,
+                "module": "Transferable",
+                "completed": false
+            },
+            {
+                "name": "Arbitrary courses",
+                "ects": 4.5,
+                "module": "Transferable",
+                "completed": false
+            }
+        ]
 
-            // BDHPC Core and Extension
-            { name: 'Basics of Parallel Computing', ects: 3, module: 'BDHPC/CO' },
-            { name: 'Efficient Programs', ects: 3, module: 'BDHPC/CO' },
-            { name: 'Advanced Multiprocessor Programming', ects: 4, module: 'BDHPC/EX' },
-            { name: 'Algorithmic Geometry', ects: 4.5, module: 'BDHPC/EX' },
-            { name: 'Algorithmics', ects: 6, module: 'BDHPC/EX' },
-            { name: 'Analysis 2', ects: 4.5, module: 'BDHPC/EX' },
-            { name: 'Approximation Algorithms', ects: 3, module: 'BDHPC/EX' },
-            { name: 'Complexity Analysis', ects: 3, module: 'BDHPC/EX' },
-            { name: 'Database Theory', ects: 3, module: 'BDHPC/EX' },
-            { name: 'Fixed-Parameter Algorithms and Complexity', ects: 4.5, module: 'BDHPC/EX' },
-            { name: 'Frontiers of Algorithms and Complexity', ects: 3, module: 'BDHPC/EX' },
-            { name: 'GPU Architectures and Computing', ects: 6, module: 'BDHPC/EX' },
-            { name: 'Graph Drawing Algorithms', ects: 4.5, module: 'BDHPC/EX' },
-            { name: 'Hands-On Cloud Native', ects: 6, module: 'BDHPC/EX' },
-            { name: 'Heuristic Optimization Techniques', ects: 4.5, module: 'BDHPC/EX' },
-            { name: 'High Performance Computing', ects: 4.5, module: 'BDHPC/EX' },
-            { name: 'Hybrid Classic-Quantum Systems', ects: 4.5, module: 'BDHPC/EX' },
-            { name: 'Nonlinear Optimization', ects: 3, module: 'BDHPC/EX' },
-            { name: 'Optimization in Transport and Logistics', ects: 3, module: 'BDHPC/EX' },
-            { name: 'Randomized Algorithms', ects: 3, module: 'BDHPC/EX' },
-            { name: 'Structural Decompositions and Algorithms', ects: 3, module: 'BDHPC/EX' },
+        const MAX_ECTS_PER_EXT = 18 // maximum ECTS that can be counted per extension
+        const N_CORES_REQUIRED = 2 // requirement for number of cores completed
 
-            // VAST Core and Extension
-            { name: 'Advanced Information Retrieval', ects: 3, module: 'VAST/CO' },
-            { name: 'Design and Evaluation of Visualisations', ects: 3, module: 'VAST/CO' },
-            { name: 'Deductive Databases', ects: 3, module: 'VAST/EX' },
-            { name: 'Description Logics and Ontologies', ects: 3, module: 'VAST/EX' },
-            { name: 'Document Analysis', ects: 3, module: 'VAST/EX' },
-            { name: 'Information Visualization', ects: 1.5, module: 'VAST/EX' },
-            { name: 'Knowledge-based Systems', ects: 6, module: 'VAST/EX' },
-            { name: 'Knowledge Graphs', ects: 3, module: 'VAST/EX' },
-            { name: 'Medical Image Processing', ects: 3, module: 'VAST/EX' },
-            { name: 'Natural Language Processing and Information Extraction', ects: 3, module: 'VAST/EX' },
-            { name: 'Processing of Declarative Knowledge', ects: 3, module: 'VAST/EX' },
-            { name: 'Real-time Visualization', ects: 3, module: 'VAST/EX' },
-            { name: 'Research Topics in Natural Language Processing', ects: 3, module: 'VAST/EX' },
-            { name: 'Semantic Web Technologies', ects: 3, module: 'VAST/EX' },
-            { name: 'Semi-Automatic Information and Knowledge Systems', ects: 3, module: 'VAST/EX' },
-            { name: 'Visual Data Science', ects: 3, module: 'VAST/EX' },
-            { name: 'Visualization 2', ects: 4.5, module: 'VAST/EX' },
-
-            // Thesis
-            { name: 'Seminar für Diplomand_innen', ects: 1.5, module: 'Thesis' },
-            { name: 'Diplomarbeit', ects: 27, module: 'Thesis' },
-            { name: 'Defense / Kommissionelle Abschlussprüfung', ects: 1.5, module: 'Thesis' },
-            
-            // Transferable Skills
-            { name: 'Transferable skills courses (see catalogue)', ects: 4.5, module: 'Transferable' },
-            { name: 'Arbitrary courses', ects: 4.5, module: 'Transferable' },
-        ];
-        let selectedCourses = new Set();
+        // group courses by module
+        const groupedCourses = courses.reduce((acc, course) => {
+            const group = acc[course.module] || [];
+            group.push(course);
+            acc[course.module] = group;
+            return acc;
+        }, {});
 
         /*
          * rendering
@@ -266,14 +756,6 @@
         function renderCourses() {
             const courseList = document.getElementById('courseList');
             courseList.innerHTML = '';
-
-            // group courses by module
-            const groupedCourses = courses.reduce((acc, course) => {
-                const group = acc[course.module] || [];
-                group.push(course);
-                acc[course.module] = group;
-                return acc;
-            }, {});
 
             // render each group
             Object.entries(groupedCourses).forEach(([module, moduleCourses]) => {
@@ -286,7 +768,7 @@
                     courseDiv.className = 'course-item';
                     courseDiv.innerHTML = `
                         <input type="checkbox" id="${course.name}" 
-                               ${selectedCourses.has(course.name) ? 'checked' : ''}>
+                               ${course.completed} ? 'checked' : ''}>
                         <label for="${course.name}">
                             ${course.name} 
                             <span class="ects">(${course.ects} ECTS)</span>
@@ -295,11 +777,7 @@
 
                     const checkbox = courseDiv.querySelector('input');
                     checkbox.addEventListener('change', () => {
-                        if (checkbox.checked) {
-                            selectedCourses.add(course.name);
-                        } else {
-                            selectedCourses.delete(course.name);
-                        }
+                        course.completed = !course.completed
                         updateProgress();
                     });
 
@@ -314,7 +792,7 @@
             const progress = document.getElementById('progress');
             const totalEctsDiv = document.getElementById('totalEcts');
             const graduationStatus = document.getElementById('graduationStatus');
-            
+
             // reset current values
             Object.values(modules).forEach(module => {
                 if (module.submodules) {
@@ -327,37 +805,74 @@
                 }
             });
 
+            function sumECTSInModule(module) {
+                return module.filter(course => course.completed).map(course => course.ects).reduce((acc, curr) => acc + curr, 0)
+            }
+
             // calculate current ECTS for each module
-            let totalEcts = 0;
-            let transferableSkillsEcts = 0;
+            let extras = 0;
 
-            selectedCourses.forEach(courseName => {
-                const course = courses.find(c => c.name === courseName);
-                if (!course) return;
+            Object.entries(modules['Data Science - Foundations'].submodules).forEach(([name, subModule]) => {
+                subModule.current = sumECTSInModule(groupedCourses[name])
+            })
 
-                totalEcts += course.ects;
+            modules['Domain-Specific Aspects'].current = sumECTSInModule(groupedCourses['DSA'])
 
-                if (course.module === 'Transferable') {
-                    transferableSkillsEcts += course.ects;
-                    modules['Free Choice'].current += course.ects;
-                } else if (course.module === 'DSA') {
-                    modules['Domain-Specific Aspects'].current += course.ects;
-                } else if (course.module === 'Thesis') {
-                    modules['Thesis'].current += course.ects;
-                } else if (course.module.endsWith('/EX')) {
-                    modules['Extension Modules'].current += course.ects;
-                } else if (course.module.endsWith('/CO')) {
-                    const moduleKey = course.module;
-                    if (modules['Key Areas'].submodules[moduleKey]) {
-                        modules['Key Areas'].submodules[moduleKey].current += course.ects;
-                    }
-                } else if (course.module.endsWith('/FD')) {
-                    const moduleKey = course.module;
-                    if (modules['Data Science - Foundations'].submodules[moduleKey]) {
-                        modules['Data Science - Foundations'].submodules[moduleKey].current += course.ects;
+            Object.entries(modules['Key Areas'].submodules).forEach(([name, subModule]) => {
+                const sumECTS = sumECTSInModule(groupedCourses[name])
+                if (sumECTS === subModule.required) {
+                    // cores do not count until you have both core courses completed
+                    subModule.current = sumECTS
+                } else {
+                    extras += sumECTS
+                }
+            })
+
+            Object.entries(groupedCourses).map(([name, courses]) => {
+                if (name.includes('EX')) {
+                    const sumECTS = sumECTSInModule(courses)
+                    console.log(sumECTS)
+                    const coreModuleName = name.split("/")[0]
+                    const coreModule = modules['Key Areas'].submodules[coreModuleName + '/CO']
+                    if (coreModule.current === coreModule.required) {
+                        // extensions don't count unless you have the corresponding core completed
+                        modules['Extension Modules'].current += Math.min(sumECTS, MAX_ECTS_PER_EXT)
+                        extras += Math.max(0, sumECTS - MAX_ECTS_PER_EXT)
+                    } else {
+                        extras += sumECTS
                     }
                 }
-            });
+            })
+
+            const completedCores = Object.values(modules['Key Areas'].submodules)
+                .filter(sub => sub.current >= sub.required).length;
+
+            // add extra cores towards extensions    
+            let extraCores = completedCores - N_CORES_REQUIRED
+            Object.entries(modules['Key Areas'].submodules).forEach(([name, subModule]) => {
+                if (extraCores > 0 && subModule.current === subModule.required) {
+                    // extra cores count towards Extension/Free Choice
+                    modules['Extension Modules'].current += Math.min(subModule.current, MAX_ECTS_PER_EXT)
+                    extras += Math.max(0, subModule.current - MAX_ECTS_PER_EXT)
+                    subModule.current = 0
+                    extraCores -= 1
+                }
+            })
+
+            // add extra extension credits to free electives (this technically does not need to be done according to the curriculum,
+            // but is cleaner in this implementation)
+            extras += Math.max(0, modules['Extension Modules'].current - modules['Extension Modules'].required)
+            modules['Extension Modules'].current = Math.min(modules['Extension Modules'].current, modules['Extension Modules'].required)
+            
+            const arbitraryECTS = Object.values(groupedCourses['Transferable']).find(el => el.name === 'Arbitrary courses').ects
+
+            const leftoverECTS = Math.max(0, extras - arbitraryECTS)
+            modules['Free Choice'].current = Math.min(extras, arbitraryECTS) + sumECTSInModule(groupedCourses['Transferable'])
+            modules['Thesis'].current = sumECTSInModule(groupedCourses['Thesis'])
+
+            let totalEcts = Object.values(modules).map(module => {
+                return module.current ?? Object.values(module.submodules).map(submodule => submodule.current).reduce((acc, curr) => acc + curr)
+            }).reduce((acc, curr) => acc + curr)
 
             progress.innerHTML = '';
             let isComplete = true;
@@ -365,7 +880,7 @@
             Object.entries(modules).forEach(([name, module]) => {
                 const moduleDiv = document.createElement('div');
                 moduleDiv.className = 'module';
-                
+
                 let moduleComplete = true;
                 let moduleContent = `<h3>${name}</h3>`;
 
@@ -378,8 +893,10 @@
                                 <div class="progress-fill" style="width: ${percent}%"></div>
                             </div>
                         `;
-                        if (sub.current < sub.required) moduleComplete = false;
                     });
+                    if (Object.values(module.submodules).map(subMod => subMod.current).reduce((acc, curr) => acc + curr) < module.required) {
+                        moduleComplete = false;
+                    }
                 } else {
                     const current = module.current || 0;
                     const percent = Math.min(100, (current / module.required) * 100);
@@ -405,14 +922,14 @@
 
             totalEctsDiv.innerHTML = `
                 <h3>Total ECTS: ${totalEcts}/120</h3>
-                <div>Transferable Skills: ${transferableSkillsEcts}/4.5 ECTS</div>
+                <div>Extra ECTS (cannot be counted): ${leftoverECTS} ECTS</div>
             `;
 
-            // check graduation requirements
-            const completedCores = Object.values(modules['Key Areas'].submodules)
-                .filter(sub => sub.current >= sub.required).length;
+            //  <div>Transferable Skills: ${transferableSkillsEcts}/4.5 ECTS</div>
 
-            graduationStatus.innerHTML = isComplete && totalEcts >= 120 && completedCores >= 2 && transferableSkillsEcts >= 4.5
+            // check graduation requirements
+
+            graduationStatus.innerHTML = isComplete && totalEcts >= 120 && completedCores >= N_CORES_REQUIRED && transferableSkillsEcts >= 4.5
                 ? '<h3 class="success">✅ All graduation requirements met!</h3>'
                 : '<h3 class="warning">❌ Not all requirements met yet</h3>';
         }
@@ -422,4 +939,5 @@
         updateProgress();
     </script>
 </body>
+
 </html>
