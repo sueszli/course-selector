@@ -259,6 +259,10 @@
         ];
         let selectedCourses = new Set();
 
+        /*
+         * rendering logic
+         */
+
         function renderCourses() {
             const courseList = document.getElementById('courseList');
             courseList.innerHTML = '';
@@ -355,7 +359,6 @@
                 }
             });
 
-            // render progress
             progress.innerHTML = '';
             let isComplete = true;
 
