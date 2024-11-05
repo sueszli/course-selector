@@ -887,8 +887,10 @@
                                 <div class="progress-fill" style="width: ${percent}%"></div>
                             </div>
                         `;
-                        if (sub.current < sub.required) moduleComplete = false;
                     });
+                    if (Object.values(module.submodules).map(subMod => subMod.current).reduce((acc, curr) => acc + curr) < module.required) {
+                        moduleComplete = false;
+                    }
                 } else {
                     const current = module.current || 0;
                     const percent = Math.min(100, (current / module.required) * 100);
