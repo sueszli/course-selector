@@ -847,6 +847,7 @@
             const completedCores = Object.values(modules['Key Areas'].submodules)
                 .filter(sub => sub.current >= sub.required).length;
 
+            // add extra cores towards extensions    
             let extraCores = completedCores - N_CORES_REQUIRED
             Object.entries(modules['Key Areas'].submodules).forEach(([name, subModule]) => {
                 if (extraCores > 0 && subModule.current === subModule.required) {
@@ -858,6 +859,11 @@
                 }
             })
 
+            // add extra extension credits to free electives (this technically does not need to be done according to the curriculum,
+            // but is cleaner in this implementation)
+            extras += Math.max(0, modules['Extension Modules'].current - modules['Extension Modules'].required)
+            modules['Extension Modules'].current = Math.min(modules['Extension Modules'].current, modules['Extension Modules'].required)
+            
             const arbitraryECTS = Object.values(groupedCourses['Transferable']).find(el => el.name === 'Arbitrary courses').ects
 
             const leftoverECTS = Math.max(0, extras - arbitraryECTS)
