@@ -136,48 +136,82 @@
         };
 
         const courses = [
-            // foundations
+            // Data Science - Foundations (FDS/FD)
             { name: 'AKSTA Statistical Computing', ects: 3, module: 'FDS/FD' },
             { name: 'Data-oriented Programming Paradigms', ects: 3, module: 'FDS/FD' },
             { name: 'Experiment Design for Data Science', ects: 3, module: 'FDS/FD' },
+            
+            // Machine Learning and Statistics - Foundations (MLS/FD)
             { name: 'Advanced Methods for Regression and Classification', ects: 4.5, module: 'MLS/FD' },
             { name: 'Machine Learning', ects: 4.5, module: 'MLS/FD' },
+            
+            // Big Data and HPC - Foundations (BDHPC/FD)
             { name: 'Advanced Database Systems', ects: 6, module: 'BDHPC/FD' },
             { name: 'Data-intensive Computing', ects: 3, module: 'BDHPC/FD' },
+            
+            // Visual Analytics - Foundations (VAST/FD)
             { name: 'Cognitive Foundations of Visualization', ects: 3, module: 'VAST/FD' },
             { name: 'Information Visualization', ects: 3, module: 'VAST/FD' },
             { name: 'Semantic Systems', ects: 3, module: 'VAST/FD' },
             
-            // domain-specific
+            // Domain-specific Aspects (DSA)
             { name: 'Interdisciplinary Lecture Series on Data Science', ects: 1, module: 'DSA' },
             { name: 'Interdisciplinary Project in Data Science', ects: 5, module: 'DSA' },
             
-            // core modules
+            // FDS Core and Extension
             { name: 'Data Acquisition and Survey Methods', ects: 3, module: 'FDS/CO' },
             { name: 'Data Stewardship', ects: 3, module: 'FDS/CO' },
+            { name: 'Advanced Cryptography', ects: 6, module: 'FDS/EX' },
+            { name: 'Communicating Data', ects: 3, module: 'FDS/EX' },
+            { name: 'Computational Social Science', ects: 3, module: 'FDS/EX' },
+            { name: 'Data Center Operations', ects: 3, module: 'FDS/EX' },
+            { name: 'Digital Humanism', ects: 3, module: 'FDS/EX' },
+            { name: 'Internet Security', ects: 3, module: 'FDS/EX' },
+            { name: 'Sustainability in Computer Science', ects: 3, module: 'FDS/EX' },
+            { name: 'Symmetric Cryptography', ects: 6, module: 'FDS/EX' },
+            { name: 'Systems and Applications Security', ects: 6, module: 'FDS/EX' },
+            { name: 'User Research Methods', ects: 3, module: 'FDS/EX' },
+            
+            // MLS Core and Extension
             { name: 'Recommender Systems', ects: 3, module: 'MLS/CO' },
             { name: 'Statistical Simulation and Computer Intensive Methods', ects: 3, module: 'MLS/CO' },
+            { name: 'Advanced Modeling and Simulation', ects: 3, module: 'MLS/EX' },
+            { name: 'AI/ML in the Era of Climate Change', ects: 4, module: 'MLS/EX' },
+            { name: 'Advanced Reinforcement Learning', ects: 3, module: 'MLS/EX' },
+            { name: 'Reinforcement Learning', ects: 6, module: 'MLS/EX' },
+            { name: 'Algorithmic Social Choice', ects: 6, module: 'MLS/EX' },
+            { name: 'Applied Deep Learning', ects: 3, module: 'MLS/EX' },
+            { name: 'Bayesian Statistics', ects: 5, module: 'MLS/EX' },
+            { name: 'Business Intelligence', ects: 6, module: 'MLS/EX' },
+            { name: 'Deep Learning for Visual Computing', ects: 3, module: 'MLS/EX' },
+            
+            // BDHPC Core and Extension
             { name: 'Basics of Parallel Computing', ects: 3, module: 'BDHPC/CO' },
             { name: 'Efficient Programs', ects: 3, module: 'BDHPC/CO' },
+            { name: 'Advanced Multiprocessor Programming', ects: 4, module: 'BDHPC/EX' },
+            { name: 'Algorithmic Geometry', ects: 4.5, module: 'BDHPC/EX' },
+            { name: 'GPU Architectures and Computing', ects: 6, module: 'BDHPC/EX' },
+            { name: 'High Performance Computing', ects: 4.5, module: 'BDHPC/EX' },
+            
+            // VAST Core and Extension
             { name: 'Advanced Information Retrieval', ects: 3, module: 'VAST/CO' },
             { name: 'Design and Evaluation of Visualisations', ects: 3, module: 'VAST/CO' },
-
-            // extension examples (abbreviated list)
-            { name: 'Applied Deep Learning', ects: 3, module: 'MLS/EX' },
             { name: 'Knowledge Graphs', ects: 3, module: 'VAST/EX' },
-            { name: 'GPU Architectures and Computing', ects: 6, module: 'BDHPC/EX' },
-            { name: 'Digital Humanism', ects: 3, module: 'FDS/EX' },
-
-            // thesis
+            { name: 'Visual Data Science', ects: 3, module: 'VAST/EX' },
+            { name: 'Visualization 2', ects: 4.5, module: 'VAST/EX' },
+            
+            // Thesis
             { name: 'Seminar für Diplomand_innen', ects: 1.5, module: 'Thesis' },
             { name: 'Diplomarbeit', ects: 27, module: 'Thesis' },
             { name: 'Kommissionelle Abschlussprüfung', ects: 1.5, module: 'Thesis' },
-
-            // transferable skills examples
+            
+            // Transferable Skills
             { name: 'Leadership Competency Coaching 1', ects: 3, module: 'Transferable' },
-            { name: 'Research Methods', ects: 3, module: 'Transferable' }
+            { name: 'Research Methods', ects: 3, module: 'Transferable' },
+            { name: 'Group Dynamics', ects: 3, module: 'Transferable' },
+            { name: 'Communication and rhetoric', ects: 3, module: 'Transferable' },
+            { name: 'Presentation and Moderation', ects: 3, module: 'Transferable' }
         ];
-
         let selectedCourses = new Set();
 
         function renderCourses() {
